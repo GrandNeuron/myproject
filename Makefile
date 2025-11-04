@@ -4,5 +4,8 @@ gen:
 lint:
 	golangci-lint run --color=auto
 
+test:
+	go test ./... -v
+
 run:
 	go run ./cmd/main.go
