@@ -47,7 +47,8 @@ func (h *TaskHandler) PostTasks(ctx context.Context, request tasks.PostTasksRequ
 		return nil, nil
 	}
 
-	calc, err := h.service.CreateCalculation(*request.Body.Task)
+	// TODO: Extract user_id from request body when frontend supports it
+	calc, err := h.service.CreateCalculation(*request.Body.Task, "")
 	if err != nil {
 		return nil, err
 	}

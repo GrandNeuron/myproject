@@ -6,6 +6,7 @@ type Calculation struct {
 	ID         string `gorm:"primaryKey" json:"id"` // Уникальный идентификатор записи
 	Expression string `json:"expression"`           // Выражение (например, "2+2")
 	Result     string `json:"result"`               // Результат вычисления (например, "4")
+	UserID     string `gorm:"index" json:"user_id"` // ID пользователя-владельца задачи
 }
 
 // CalculationRequest — структура для приёма данных от пользователя.

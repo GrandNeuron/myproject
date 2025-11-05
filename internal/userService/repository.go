@@ -1,0 +1,56 @@
+package userService
+
+import (
+	"gorm.io/gorm"
+
+	calculationService "CalculatorAppFrontendPantela-main/internal/calculationService"
+)
+
+// UserRepository — интерфейс для работы с пользователями в БД
+type UserRepository interface {
+	CreateUser(user User) error
+	GetAllUsers() ([]User, error)
+	GetUserByID(id string) (User, error)
+	UpdateUser(user User) error
+	DeleteUser(id string) error
+	GetTasksForUser(userID string) ([]calculationService.Calculation, error)
+}
+
+type userRepository struct {
+	db *gorm.DB
+}
+
+// NewUserRepository — конструктор репозитория
+func NewUserRepository(db *gorm.DB) UserRepository {
+	return &userRepository{db: db}
+}
+
+func (r *userRepository) CreateUser(user User) error {
+	return r.db.Create(&user).Error
+}
+
+func (r *userRepository) GetAllUsers() ([]User, error) {
+	var users []User
+	err := r.db.Find(&users).Error
+	return users, err
+}
+
+func (r *userRepository) GetUserByID(id string) (User, error) {
+	var user User
+	err := r.db.First(&user, "id = ?", id).Error
+	return user, err
+}
+
+func (r *userRepository) UpdateUser(user User) error {
+	return r.db.Save(&user).Error
+}
+
+func (r *userRepository) DeleteUser(id string) error {
+	return r.db.Delete(&User{}, "id = ?", id).Error
+}
+
+func (r *userRepository) GetTasksForUser(userID string) ([]calculationService.Calculation, error) {
+	var tasks []calculationService.Calculation
+	err := r.db.Where("user_id = ?", userID).Find(&tasks).Error
+	return tasks, err
+}

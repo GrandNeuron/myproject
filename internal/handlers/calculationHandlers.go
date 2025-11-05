@@ -41,7 +41,8 @@ func (h *CalculationHandler) PostCalculations(c echo.Context) error {
 	}
 
 	// Создание новой записи через сервис
-	calc, err := h.service.CreateCalculation(req.Expression)
+	// TODO: Add support for userID when needed
+	calc, err := h.service.CreateCalculation(req.Expression, "")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Could not create calculation"})
 	}

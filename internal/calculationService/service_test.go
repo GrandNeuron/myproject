@@ -49,7 +49,7 @@ func TestCreateCalculation(t *testing.T) {
 			tt.mockSetup(mockRepo, tt.input)
 
 			service := NewCalculationService(mockRepo)
-			result, err := service.CreateCalculation(tt.input)
+			result, err := service.CreateCalculation(tt.input, "")
 
 			if tt.wantErr {
 				assert.Error(t, err)

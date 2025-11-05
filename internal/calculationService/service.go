@@ -9,7 +9,7 @@ import (
 
 // Интерфейс описывает все операции для бизнес-логики.
 type CalculationService interface {
-	CreateCalculation(expression string) (Calculation, error)
+	CreateCalculation(expression, userID string) (Calculation, error)
 	GetAllCalculations() ([]Calculation, error)
 	GetCalculationByID(id string) (Calculation, error)
 	UpdateCalculation(id, expression string) (Calculation, error)
@@ -44,7 +44,7 @@ func (s *calcService) calculateExpression(expression string) (string, error) {
 }
 
 // CreateCalculation — создаёт новую запись: вычисляет и сохраняет результат.
-func (s *calcService) CreateCalculation(expression string) (Calculation, error) {
+func (s *calcService) CreateCalculation(expression, userID string) (Calculation, error) {
 	result, err := s.calculateExpression(expression)
 	if err != nil {
 		return Calculation{}, err
@@ -54,6 +54,7 @@ func (s *calcService) CreateCalculation(expression string) (Calculation, error) 
 		ID:         uuid.NewString(),
 		Expression: expression,
 		Result:     result,
+		UserID:     userID,
 	}
 
 	if err := s.repo.CreateCalculation(calc); err != nil {
